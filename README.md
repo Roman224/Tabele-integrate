@@ -25,3 +25,30 @@ INSTALLED_APPS = [
 ```
 
 1. Dupa in models scriem:
+
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class Category(models.Model):
+    name = models.CharField(max_length = 255, db_index = True)
+    slug = models.SlugField(max_length = 255, unique = True)
+    updated = models.DateTimeField(auto_now = True)
+    created = models.DateTimeField(auto_now_add = True)
+    class Meta:
+        vertoose_name_plural = 'categories'
+    def __str__(self):
+        return self.name
+```
+
+1. Inregistram tabelul in admin:
+
+```python
+from django.contrib import admin
+from.models import Category
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'slug']
+    prepopulated_fields = {'slug':('name')}
+```
